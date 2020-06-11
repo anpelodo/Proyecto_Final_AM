@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import org.eclipse.paho.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttActionListener
-import org.eclipse.paho.client.mqttv3.IMqttToken
-import org.eclipse.paho.client.mqttv3.MqttException
+import org.eclipse.paho.client.mqttv3.*
+import java.lang.Exception
 import java.security.AccessControlContext
 
 class MainActivity : AppCompatActivity() {
@@ -101,5 +100,44 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun receiveMessages () {
+        mqttAndroidClient.setCallback(object : MqttCallback {
+            override fun connectionLost(cause: Throwable?) {
+                //connectionStatus = false
+                //todo Entregar la función de callback si se pierde la conexión
+            }
 
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                try {
+                    val data = String(message.payload, charset("UTF-8"))
+                    val qos = message!!.qos
+
+                    Log.i("MQTT Message Recibed", "topic: $topic, payload: $data, qos: $qos")
+                } catch (e: Exception) {
+                    Log.i("MQTT Recibed Error", "catch error")
+                }
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                // Aknowledgement on delivery complete
+            }
+        })
+    }
+
+    private fun publish (topic: String, data: String, qos: Int)  {
+        val encodedPayload : ByteArray
+
+        try {
+            encodedPayload = data.toByteArray(charset("UTF-8"))
+            val message = MqttMessage(encodedPayload)
+            message.qos = qos
+            message.isRetained = false
+            mqttAndroidClient.publish(topic, message)
+
+        } catch (e: Exception) {
+            // Give Callback on error here
+        } catch (e: MqttException) {
+            // Give Callback on error here
+        }
+    }
 }
