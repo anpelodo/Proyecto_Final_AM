@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ActivityDeviceList"></activity>
         <activity android:name=".Registro" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService" />
