@@ -38,7 +38,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         Ing!!.setOnClickListener {
-
+            val i: Intent = Intent(this, Tabbed_Ac::class.java)
+            startActivity(i)
         }
     }
 
