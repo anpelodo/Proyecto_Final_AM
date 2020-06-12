@@ -44,13 +44,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //return super.onCreateOptionsMenu(menu)
-        val nuevomenu: MenuInflater = menuInflater
-
+        var nuevomenu:MenuInflater=menuInflater
         nuevomenu.inflate(R.menu.menuone, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {        val nuevomenu: MenuInflater = menuInflater
+
         return  when (item.itemId){
             R.id.item1 -> {
                 Toast.makeText(this,"Selecciono la opcion 1", Toast.LENGTH_LONG).show()
