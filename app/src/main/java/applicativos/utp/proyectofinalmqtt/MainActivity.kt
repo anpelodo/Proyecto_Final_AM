@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
-            R.id.item1 -> {
+            R.id.item2 -> {
                 Toast.makeText(this,"Selecciono la opcion 2", Toast.LENGTH_LONG).show()
                 true
             }
