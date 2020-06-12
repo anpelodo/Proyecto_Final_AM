@@ -25,14 +25,6 @@ class adaptador(lista: ArrayList<deviceInfo>): RecyclerView.Adapter<adaptador.Vi
             id = vista.cardTextViewID
             name = vista.cardTextViewName
         }
-
-        fun llenarDatos(data: deviceInfo) {
-            id = itemView.findViewById(R.id.cardTextViewID)
-            name = itemView.findViewById(R.id.cardTextViewName)
-
-            id.text = data.id
-            name.text = data.nombre
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): adaptador.ViewHolder {
@@ -49,7 +41,9 @@ class adaptador(lista: ArrayList<deviceInfo>): RecyclerView.Adapter<adaptador.Vi
     }
 
     override fun onBindViewHolder(holder: adaptador.ViewHolder, position: Int) {
-        //llena los datos
-        holder.llenarDatos(lista!![position])
+        val item = lista?.get(position)
+        holder.id?.text = item?.id
+        holder.name?.text = item?.nombre
+
     }
 }
