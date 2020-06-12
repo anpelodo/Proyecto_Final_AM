@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 class ActivityDeviceList : AppCompatActivity() {
     var vista: RecyclerView ?= null
 
+    var info = ArrayList<deviceInfo>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_list)
@@ -18,8 +20,6 @@ class ActivityDeviceList : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        val info = ArrayList<deviceInfo>()
 
         info.add(deviceInfo("BB1", "Centro", "4.814248,-75.694688", "tabla_bb1"))
         info.add(deviceInfo("BB2", "Parque Industrial", "4.814248,-75.694688", "tabla_bb2"))
