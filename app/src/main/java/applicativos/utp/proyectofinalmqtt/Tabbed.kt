@@ -10,11 +10,11 @@ import android.view.Menu
 import android.view.MenuItem
 import applicativos.utp.proyectofinalmqtt.ui.main.SectionsPagerAdapter
 
-class Tabbed_Ac : AppCompatActivity() {
+class Tabbed : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tabbed_)
+        setContentView(R.layout.activity_tabbed)
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
