@@ -5,25 +5,28 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.lang.Exception
-import java.security.AccessControlContext
 
 class MainActivity : AppCompatActivity() {
-    private val TAG: String = "MQTT Message"
+    var texto: TextView ?= null
     var buttontest: Button ?= null
 
-    val Reg= "123"
-    val broker = "broker.hivemq.com"
-
+    private var connectionStatus = false
+    private val QOS = 2
+    private val broker = "tcp://broker.hivemq.com"
+    private val topic = "ProyectoFinalDigitales4_1088345579"
     private lateinit var mqttAndroidClient: MqttAndroidClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         buttontest = findViewById(R.id.button)
+        texto = findViewById(R.id.textView)
 
+        connectMqtt(this)
     }
 
     override fun onResume() {
@@ -31,25 +34,26 @@ class MainActivity : AppCompatActivity() {
         //comentario
 
         buttontest!!.setOnClickListener {
-            Log.i(TAG, "Prueba de los logs")
+            publishMqtt(topic, "Prueba desde el aplicativo", QOS)
         }
     }
 
-    private fun connect (context: Context) {
+    private fun connectMqtt (context: Context) {
         mqttAndroidClient = MqttAndroidClient(context.applicationContext, broker, "clientID123456789")
 
         try {
             val token = mqttAndroidClient.connect()
             token.actionCallback = object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
+                    connectionStatus = true
                     Log.i("MQTT Connection", "Success")
 
-                    //connectionStatus = true
-                    //todo crea la variable para decir que se generó la conección
+                    //Apenas conecta, se subscribe
+                    subscribeMqtt(topic, QOS)
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
-                    //connectionStatus = false
+                    connectionStatus = false
                     Log.i("MQTT Connection", "Failure")
 
                     if (exception != null) {
@@ -62,13 +66,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun subscribe (topic: String, qos: Int) {
+    private fun subscribeMqtt (Topic: String, qos: Int) {
         try{
-            mqttAndroidClient.subscribe(topic, qos, null, object:
+            mqttAndroidClient.subscribe(Topic, qos, null, object:
                 IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.i("MQTT Subscribe", "Success")
-                    //todo Entregar la función de callback para la subscripción correcta
+
+                    //Apenas se subscribe al tópico, inicia en AsynTask la recepción de mensajes
+                    receiveMessagesMqtt()
                 }
 
                 override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
@@ -81,9 +87,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun unSubscribe(topic: String) {
+    private fun unSubscribeMqtt (Topic: String) {
         try {
-            val unsubToken = mqttAndroidClient.unsubscribe(topic)
+            val unsubToken = mqttAndroidClient.unsubscribe(Topic)
             unsubToken.actionCallback = object : IMqttActionListener {
                 override fun onSuccess(asyncActionToken: IMqttToken?) {
                     Log.i("MQTT unSubscribe", "Success")
@@ -100,19 +106,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun receiveMessages () {
+    private fun receiveMessagesMqtt () {
         mqttAndroidClient.setCallback(object : MqttCallback {
             override fun connectionLost(cause: Throwable?) {
                 //connectionStatus = false
                 //todo Entregar la función de callback si se pierde la conexión
             }
 
-            override fun messageArrived(topic: String?, message: MqttMessage?) {
+            override fun messageArrived(Topic: String?, message: MqttMessage?) {
                 try {
-                    val data = String(message.payload, charset("UTF-8"))
-                    val qos = message!!.qos
+                    val data = String(message!!.payload, charset("UTF-8"))
+                    val qos = message.qos
 
-                    Log.i("MQTT Message Recibed", "topic: $topic, payload: $data, qos: $qos")
+                    texto!!.text = data
+                    Log.i("MQTT Message Recibed", "Topic: $Topic, payload: $data, qos: $qos")
                 } catch (e: Exception) {
                     Log.i("MQTT Recibed Error", "catch error")
                 }
@@ -124,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun publish (topic: String, data: String, qos: Int)  {
+    private fun publishMqtt (Topic: String, data: String, qos: Int)  {
         val encodedPayload : ByteArray
 
         try {
@@ -132,7 +139,7 @@ class MainActivity : AppCompatActivity() {
             val message = MqttMessage(encodedPayload)
             message.qos = qos
             message.isRetained = false
-            mqttAndroidClient.publish(topic, message)
+            mqttAndroidClient.publish(Topic, message)
 
         } catch (e: Exception) {
             // Give Callback on error here
