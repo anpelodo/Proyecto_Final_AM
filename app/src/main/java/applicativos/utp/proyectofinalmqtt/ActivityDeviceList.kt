@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 class ActivityDeviceList : AppCompatActivity() {
     var vista: RecyclerView ?= null
 
+    var auth = MainActivity.auth
+
     var info = ArrayList<deviceInfo>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,16 +25,18 @@ class ActivityDeviceList : AppCompatActivity() {
         vista!!.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         val adapter = adaptador(info, object: ClickListener{
             override fun onClick(vista: View, posicion: Int) {
-                Toast.makeText(applicationContext, info?.get(posicion).id, Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, info[posicion].id, Toast.LENGTH_SHORT).show()
             }
         })
         vista!!.adapter = adapter
-
     }
 
     override fun onResume() {
         super.onResume()
+    }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        auth.signOut()
     }
 }
