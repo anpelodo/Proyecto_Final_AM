@@ -22,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/card_device_list"/>
+            tools:listitem="@layout/card_device_list" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

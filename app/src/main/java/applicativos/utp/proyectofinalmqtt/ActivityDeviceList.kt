@@ -2,6 +2,8 @@ package applicativos.utp.proyectofinalmqtt
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,7 +21,11 @@ class ActivityDeviceList : AppCompatActivity() {
 
         vista = findViewById(R.id.contenedor)
         vista!!.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        val adapter = adaptador(info)
+        val adapter = adaptador(info, object: ClickListener{
+            override fun onClick(vista: View, posicion: Int) {
+                Toast.makeText(applicationContext, info?.get(posicion).id, Toast.LENGTH_SHORT).show()
+            }
+        })
         vista!!.adapter = adapter
 
     }

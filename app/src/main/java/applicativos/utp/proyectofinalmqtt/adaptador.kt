@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.card_device_list.view.*
 import kotlin.random.Random
 
 
-class adaptador(lista: ArrayList<deviceInfo>): RecyclerView.Adapter<adaptador.ViewHolder>() {
+class adaptador(lista: ArrayList<deviceInfo>, var clickListener: ClickListener): RecyclerView.Adapter<adaptador.ViewHolder>() {
     var lista: ArrayList<deviceInfo> ?= null
     var viewHolder:ViewHolder ?= null
 
@@ -19,22 +19,31 @@ class adaptador(lista: ArrayList<deviceInfo>): RecyclerView.Adapter<adaptador.Vi
         this.lista = lista
     }
 
-    class ViewHolder (view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder (view: View, listener: ClickListener): RecyclerView.ViewHolder(view), View.OnClickListener {
         var vista = view
         var id: TextView ?= null
         var name: TextView ?= null
         var icon: ImageView ?= null
+        var listener: ClickListener ?= null
         init {
             id = vista.cardTextViewID
             name = vista.cardTextViewName
             icon = vista.cardImageViewIcon
+
+            this.listener = listener
+
+            vista.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            this.listener?.onClick(v!!, adapterPosition)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): adaptador.ViewHolder {
         val mostrar = LayoutInflater.from(parent.context).inflate(R.layout.card_device_list, parent, false)
 
-        viewHolder = ViewHolder(mostrar)
+        viewHolder = ViewHolder(mostrar, clickListener)
 
         return viewHolder!!
     }
