@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import applicativos.utp.proyectofinalmqtt.MapsFragment
 import applicativos.utp.proyectofinalmqtt.R
 import applicativos.utp.proyectofinalmqtt.pagina2
-import applicativos.utp.proyectofinalmqtt.pagina3
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,
@@ -35,7 +35,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
                 return pagina2()
             }
             3-> {
-                return pagina3()
+                return MapsFragment()
             }
             else-> {
                 return PlaceholderFragment()
