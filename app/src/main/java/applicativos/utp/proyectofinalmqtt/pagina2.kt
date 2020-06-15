@@ -20,6 +20,7 @@ class pagina2 : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var vista2= inflater.inflate(R.layout.pagina2_fragment, container, false)
+
         return vista2
     }
 

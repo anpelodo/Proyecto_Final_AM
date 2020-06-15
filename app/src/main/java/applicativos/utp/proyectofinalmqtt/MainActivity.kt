@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     var Ing: Button?=null
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         Nom= findViewById(R.id.nom)
         Reg= findViewById(R.id.reg)
         Ing= findViewById(R.id.ing)
+
     }
 
     override fun onResume() {
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity() {
             val i: Intent = Intent(this,Tabbed ::class.java)
             startActivity(i)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

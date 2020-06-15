@@ -6,11 +6,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import applicativos.utp.proyectofinalmqtt.MapsFragment
 import applicativos.utp.proyectofinalmqtt.R
+import applicativos.utp.proyectofinalmqtt.pagina1
 import applicativos.utp.proyectofinalmqtt.pagina2
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,
-    R.string.tab_text_2 ,
+    R.string.tab_text_2,
     R.string.tab_text_3
 
 )
@@ -29,7 +30,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
         when(position + 1 ) {
             1-> {
 
-                return  PlaceholderFragment()
+                return pagina1()
             }
             2-> {
                 return pagina2()
@@ -38,7 +39,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
                 return MapsFragment()
             }
             else-> {
-                return PlaceholderFragment()
+                return pagina1()
             }
         }
     }
@@ -48,7 +49,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
+        // Show 3 total pages.
         return 3
     }
 }
