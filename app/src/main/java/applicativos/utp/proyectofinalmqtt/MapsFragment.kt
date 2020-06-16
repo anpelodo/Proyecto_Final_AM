@@ -24,9 +24,7 @@ import com.google.android.gms.maps.model.PolygonOptions
 
 class MapsFragment : Fragment() {
 
-    var googleMapFusedLocationProviderClient:FusedLocationProviderClient?=null
-    var mLastLocation: Location?=null
-    var mLocationRequest:LocationRequest?=null
+
 
     private val callback = OnMapReadyCallback { googleMap ->
 
