@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         var email: String = ""
         var pswd: String = ""
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -84,13 +85,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         //return super.onCreateOptionsMenu(menu)
-        val nuevomenu:MenuInflater=menuInflater
+        var nuevomenu:MenuInflater=menuInflater
         nuevomenu.inflate(R.menu.menuone, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val nuevomenu: MenuInflater = menuInflater
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {        val nuevomenu: MenuInflater = menuInflater
 
         return  when (item.itemId){
             R.id.item1 -> {
