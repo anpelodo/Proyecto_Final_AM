@@ -37,10 +37,7 @@
             android:name=".Tabbed"
             android:label="@string/title_activity_tabbed"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Tabbed_Ac"
-            android:label="@string/title_activity_tabbed_"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".ActivityDeviceList" />
         <activity
             android:name=".Registro"
