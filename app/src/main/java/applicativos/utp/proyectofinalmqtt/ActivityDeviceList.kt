@@ -59,7 +59,7 @@ class ActivityDeviceList : AppCompatActivity() {
             override fun onClick(vista: View, posicion: Int) {
                 Toast.makeText(applicationContext, info[posicion].id, Toast.LENGTH_SHORT).show()
 
-                //Compartimos la variable
+                //Compartimos la información del dispositivo seleccionado
                 infoDevice = info[posicion]
 
                 val tabla = info[posicion].tabla
@@ -85,6 +85,7 @@ class ActivityDeviceList : AppCompatActivity() {
                 Log.d("data Get Request", "JSON data Recibed: $response")
                 val gson = Gson()
 
+                //Compartimos los datos
                 dataJson = gson.fromJson(response, dataJSON::class.java)
                 openTabbed()
             }, Response.ErrorListener {

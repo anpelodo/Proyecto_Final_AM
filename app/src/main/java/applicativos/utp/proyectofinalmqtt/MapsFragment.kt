@@ -13,10 +13,21 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment() {
 
+    private val device = ActivityDeviceList.infoDevice
+
     private val callback = OnMapReadyCallback { googleMap ->
 
-        val colombia = LatLng(4.7936177,-75.69129)
-        googleMap.addMarker(MarkerOptions().position(colombia).title("Ubicacion"))
+        val id = device!!.id
+        val nombre = device.nombre
+        val ubicacionS = device.ubicacion
+
+        val lat = ubicacionS.substringBefore(',').toDouble()
+        val lng = ubicacionS.substringAfter(',').toDouble()
+
+        val tag = "id: $id\nnombre: $nombre"
+
+        val colombia = LatLng(lat,lng)
+        googleMap.addMarker(MarkerOptions().position(colombia).title(tag))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(colombia))
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(colombia,15f))
     }
