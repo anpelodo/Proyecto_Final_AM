@@ -35,7 +35,7 @@ class pagina2 : Fragment() {
     private var subj : String ?= null
 
     private var dataRecibed: mqttJSON ?= null
-    private var dataToSend: mqttJSON ?= null
+    //private var dataToSend: mqttJSON ?= null
 
     private var auth = MainActivity.auth
 
@@ -80,16 +80,17 @@ class pagina2 : Fragment() {
            val gson = Gson()
 
            try {
-               dataToSend?.subjectID = subj!!
-               dataToSend?.fromID = uid!!
+               val dataToSend = mqttJSON()
+               dataToSend.subjectID = subj!!
+               dataToSend.fromID = uid!!
 
                if (setTime.isChecked) {
                    if (timeTxt.text.isNotEmpty()) {
-                       dataToSend?.accion?.set("setTiempo", timeTxt.text.toString().toInt())
+                       dataToSend.accion["setTiempo"] = timeTxt.text.toString().toInt()
                    }
                }
 
-               dataToSend?.accion?.set("dataStream", dataRT.isChecked)
+               dataToSend.accion["dataStream"] = dataRT.isChecked
 
                val envio = gson.toJson(dataToSend)
 
@@ -110,10 +111,10 @@ class pagina2 : Fragment() {
     }
 
     private fun putData() {
-        val a1:String = dataRecibed!!.Data["A1"]!!.toString()
-        val a2:String = dataRecibed!!.Data["A2"]!!.toString()
-        val s1:Boolean = dataRecibed!!.Data["S1"] as Boolean
-        val s2:Boolean = dataRecibed!!.Data["S2"] as Boolean
+        val a1:String = dataRecibed!!.data["A1"]!!.toString()
+        val a2:String = dataRecibed!!.data["A2"]!!.toString()
+        val s1:Boolean = dataRecibed!!.data["S1"] as Boolean
+        val s2:Boolean = dataRecibed!!.data["S2"] as Boolean
 
         var txt = "A1 = $a1\n"
         txt += "A2 = $a2\n"
