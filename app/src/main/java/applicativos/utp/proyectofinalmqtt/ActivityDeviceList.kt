@@ -8,6 +8,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 
 class ActivityDeviceList : AppCompatActivity() {
     var vista: RecyclerView ?= null
@@ -16,6 +22,15 @@ class ActivityDeviceList : AppCompatActivity() {
     val cont = this
 
     var info = ArrayList<deviceInfo>()
+
+    var peticion: RequestQueue?= null
+    val dirIP = MainActivity.dirIP
+
+    companion object {
+        var infoDevice: deviceInfo ?= null
+
+        var dataJson: dataJSON ?= null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +56,13 @@ class ActivityDeviceList : AppCompatActivity() {
             override fun onClick(vista: View, posicion: Int) {
                 Toast.makeText(applicationContext, info[posicion].id, Toast.LENGTH_SHORT).show()
 
-                try {
-                    startActivity(i)
-                } catch (e: Exception) {
-                    Toast.makeText(cont, "Algo salió mal", Toast.LENGTH_SHORT).show()
-                    Log.d("Open.Activity.Tabbed", "Error al abrir")
-                }
+                //Compartimos la variable
+                infoDevice = info[posicion]
+
+                val tabla = info[posicion].tabla
+                val url = "http://$dirIP/finalDigitales4/getData.php?tabla=$tabla"
+
+                loadData(url)
             }
         })
         vista!!.adapter = adapter
@@ -55,5 +71,37 @@ class ActivityDeviceList : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         auth.signOut()
+    }
+
+    //Método para cargar los datos desde la base de datos
+    private fun loadData(URL: String){
+        peticion = Volley.newRequestQueue(this)
+
+        val conexion = StringRequest(Request.Method.GET, URL,
+            Response.Listener { response ->
+                Log.d("data Get Request", "JSON data Recibed: $response")
+                val gson = Gson()
+
+                dataJson = gson.fromJson(response, dataJSON::class.java)
+                openTabbed()
+            }, Response.ErrorListener {
+                Log.d("data Get Request", "Failed")
+            }
+        )
+
+        //Enviamos la petición
+        peticion!!.add(conexion)
+    }
+
+    //Método para abrir el tabbed View
+    private fun openTabbed() {
+        val i = Intent(this, Tabbed::class.java)
+
+        try {
+            startActivity(i)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Algo salió mal", Toast.LENGTH_SHORT).show()
+            Log.d("Open.Activity.registro", "Error al abrir")
+        }
     }
 }

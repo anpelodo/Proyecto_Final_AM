@@ -9,14 +9,12 @@ import android.view.ViewGroup
 import android.widget.*
 
 class pagina2 : Fragment() {
-    internal lateinit var Boton1: CheckBox
-    var B1=0
-    internal lateinit var Boton2: CheckBox
-    var B2=0
+    private lateinit var setTime: CheckBox
+    private lateinit var dataRT: CheckBox
+    private lateinit var sendCmd: Button
 
-    var Time: EditText? = null
-    var Obtener: Button? = null
-    var Visor: TextView? = null
+    private lateinit var timeTxt: EditText
+    private lateinit var dataTxt: TextView
 
     companion object {
         fun newInstance() = pagina2()
@@ -28,12 +26,12 @@ class pagina2 : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var vista2= inflater.inflate(R.layout.pagina2_fragment, container, false)
-        Boton1=vista2.findViewById(R.id.checkBox1)
-        Boton2=vista2.findViewById(R.id.checkBox2)
-        Time=vista2.findViewById(R.id.dato)
-        Obtener=vista2.findViewById(R.id.enviar)
-        Visor=vista2.findViewById(R.id.visor)
+        val vista2= inflater.inflate(R.layout.pagina2_fragment, container, false)
+        setTime=vista2.findViewById(R.id.checkBox1)
+        dataRT=vista2.findViewById(R.id.checkBox2)
+        timeTxt=vista2.findViewById(R.id.dato)
+        sendCmd=vista2.findViewById(R.id.enviar)
+        dataTxt=vista2.findViewById(R.id.visor)
 
         return vista2
     }
@@ -47,22 +45,25 @@ class pagina2 : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Boton1!!.setOnClickListener {
-            if (Boton1.isChecked){ B1=1;
-                Toast.makeText(context,"Acepto1",Toast.LENGTH_SHORT).show()}
-            else{ B1=0;
-                Toast.makeText(context,"Nego1",Toast.LENGTH_SHORT).show()}
-        }
-        Boton2!!.setOnClickListener {
-            if (Boton2.isChecked){ B2=1;
-                Toast.makeText(context,"Acepto2",Toast.LENGTH_SHORT).show()}
-            else{ B2=0;
-                Toast.makeText(context,"Nego2",Toast.LENGTH_SHORT).show()}
-        }
-       Obtener!!.setOnClickListener {
-            Toast.makeText(context,"Obteniendo Datos",Toast.LENGTH_SHORT).show()
+        setTime.setOnClickListener {
+            stateButton()
         }
 
+        dataRT.setOnClickListener {
+            stateButton()
+        }
+
+       sendCmd.setOnClickListener {
+
+        }
     }
 
+    private fun stateButton(){
+        timeTxt.visibility = if (setTime.isChecked) {
+            TextView.VISIBLE
+        } else {
+            TextView.GONE
+        }
+        sendCmd.isClickable = !(!setTime.isChecked && !dataRT.isChecked)
+    }
 }

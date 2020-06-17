@@ -91,13 +91,13 @@ class MainActivity : AppCompatActivity() {
 
         val conexion = StringRequest(Request.Method.GET, URL,
             Response.Listener { response ->
-                Log.d("Get Request", "JSON devices Recibed: $response")
+                Log.d("devices Get Request", "JSON devices Recibed: $response")
                 val gson = Gson()
 
                 devicesJson = gson.fromJson(response, devicesJSON::class.java)
                 openDevices()
             }, Response.ErrorListener {
-                Log.d("Get Request", "Failed")
+                Log.d("devices Get Request", "Failed")
                 }
         )
 

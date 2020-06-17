@@ -1,7 +1,7 @@
 package applicativos.utp.proyectofinalmqtt
 
 class dataJSON {
-    var nData = 0
+    var ndata = 0
     var data: ArrayList<dataArray> ?= null
 }
 
