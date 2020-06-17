@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         //Me envia al registro
         Reg!!.setOnClickListener {
-            val i = Intent(this, Registro::class.java)
+            val i = Intent(this, Tabbed::class.java)
 
             email = Correo!!.text.toString()
             pswd = Contra!!.text.toString()
