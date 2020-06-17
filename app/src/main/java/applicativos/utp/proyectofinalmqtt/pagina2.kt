@@ -9,9 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import applicativos.utp.proyectofinalmqtt.JsonClases.dataJSON
+import applicativos.utp.proyectofinalmqtt.JsonClases.mqttJSON
+import com.google.gson.Gson
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
-import java.lang.Exception
+import kotlin.Exception
 
 class pagina2 : Fragment() {
     private lateinit var setTime: Switch
@@ -29,6 +32,14 @@ class pagina2 : Fragment() {
     private val broker = "tcp://broker.hivemq.com"
     private val topic = "ProyectoFinalDigitales4_1088345579"
     private lateinit var mqttAndroidClient: MqttAndroidClient
+    private var subj : String ?= null
+
+    private var dataRecibed: mqttJSON ?= null
+    private var dataToSend: mqttJSON ?= null
+
+    private var auth = MainActivity.auth
+
+    private var uid = auth.uid
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +53,8 @@ class pagina2 : Fragment() {
         dataTxt=vista2.findViewById(R.id.visor)
 
         connectMqtt(Tabbed.tabContext)
+
+        subj = ActivityDeviceList.infoDevice!!.id
 
         return vista2
     }
@@ -64,7 +77,26 @@ class pagina2 : Fragment() {
         }
 
        sendCmd.setOnClickListener {
+           val gson = Gson()
 
+           try {
+               dataToSend?.subjectID = subj!!
+               dataToSend?.fromID = uid!!
+
+               if (setTime.isChecked) {
+                   if (timeTxt.text.isNotEmpty()) {
+                       dataToSend?.accion?.set("setTiempo", timeTxt.text.toString().toInt())
+                   }
+               }
+
+               dataToSend?.accion?.set("dataStream", dataRT.isChecked)
+
+               val envio = gson.toJson(dataToSend)
+
+               publishMqtt(topic, envio, 2)
+           } catch (e: Exception) {
+               Log.d("MQTT send", "Error")
+           }
         }
     }
 
@@ -77,8 +109,23 @@ class pagina2 : Fragment() {
         sendCmd.isEnabled = !(!setTime.isChecked && !dataRT.isChecked)
     }
 
-    //MQTT Metods
-    private fun connectMqtt (context: Context) {
+    private fun putData() {
+        val a1:String = dataRecibed!!.Data["A1"]!!.toString()
+        val a2:String = dataRecibed!!.Data["A2"]!!.toString()
+        val s1:Boolean = dataRecibed!!.Data["S1"] as Boolean
+        val s2:Boolean = dataRecibed!!.Data["S2"] as Boolean
+
+        var txt = "A1 = $a1\n"
+        txt += "A2 = $a2\n"
+        txt += "S1 = $s1\n"
+        txt += "S2 = $s2\n"
+
+        dataTxt.text = txt
+    }
+//-------------------------------------------------------------------------------------------
+//----------------------------------MQTT Metods----------------------------------------------
+//-------------------------------------------------------------------------------------------
+    fun connectMqtt (context: Context) {
         mqttAndroidClient = MqttAndroidClient(context.applicationContext, broker, "clientID123456789")
 
         try {
@@ -106,7 +153,7 @@ class pagina2 : Fragment() {
         }
     }
 
-    private fun subscribeMqtt (Topic: String, qos: Int) {
+    fun subscribeMqtt (Topic: String, qos: Int) {
         try{
             mqttAndroidClient.subscribe(Topic, qos, null, object:
                 IMqttActionListener {
@@ -127,7 +174,7 @@ class pagina2 : Fragment() {
         }
     }
 
-    private fun unSubscribeMqtt (Topic: String) {
+    fun unSubscribeMqtt (Topic: String) {
         try {
             val unsubToken = mqttAndroidClient.unsubscribe(Topic)
             unsubToken.actionCallback = object : IMqttActionListener {
@@ -146,7 +193,7 @@ class pagina2 : Fragment() {
         }
     }
 
-    private fun receiveMessagesMqtt () {
+    fun receiveMessagesMqtt () {
         mqttAndroidClient.setCallback(object : MqttCallback {
             override fun connectionLost(cause: Throwable?) {
                 //connectionStatus = false
@@ -158,8 +205,19 @@ class pagina2 : Fragment() {
                     val data = String(message!!.payload, charset("UTF-8"))
                     val qos = message.qos
 
-                    dataTxt.text = data
-                    Log.i("MQTT Message Recibed", "Topic: $Topic, payload: $data, qos: $qos")
+                    val gson = Gson()
+                    val dataJson = gson.fromJson(data, mqttJSON::class.java)
+
+                    val subjectID = dataJson.subjectID
+
+                    //Revisamos que el dato sea para éste dispositivo
+                    if (subjectID == uid) {
+                        dataRecibed = dataJson
+                        Toast.makeText(context,"Dato recibido",Toast.LENGTH_SHORT).show()
+                        Log.i("MQTT Message Recibed", "Topic: $Topic, payload: $data, qos: $qos")
+                        putData()
+                    }
+
                 } catch (e: Exception) {
                     Log.i("MQTT Recibed Error", "catch error")
                 }
@@ -171,7 +229,7 @@ class pagina2 : Fragment() {
         })
     }
 
-    private fun publishMqtt (Topic: String, data: String, qos: Int)  {
+    fun publishMqtt (Topic: String, data: String, qos: Int)  {
         val encodedPayload : ByteArray
 
         try {

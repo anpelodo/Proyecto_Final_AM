@@ -8,6 +8,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import applicativos.utp.proyectofinalmqtt.JsonClases.dataJSON
+import applicativos.utp.proyectofinalmqtt.JsonClases.deviceInfo
+import applicativos.utp.proyectofinalmqtt.JsonClases.devicesJSON
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -27,16 +30,16 @@ class ActivityDeviceList : AppCompatActivity() {
     val dirIP = MainActivity.dirIP
 
     companion object {
-        var infoDevice: deviceInfo ?= null
+        var infoDevice: deviceInfo?= null
 
-        var dataJson: dataJSON ?= null
+        var dataJson: dataJSON?= null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_list)
 
-        val list:devicesJSON = MainActivity.devicesJson!!
+        val list: devicesJSON = MainActivity.devicesJson!!
 
         when (list.ndata) {
             -1 -> Toast.makeText(this, "Error con la base de datos", Toast.LENGTH_SHORT).show()

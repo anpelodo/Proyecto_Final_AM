@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import applicativos.utp.proyectofinalmqtt.JsonClases.deviceInfo
 import kotlinx.android.synthetic.main.card_device_list.view.*
 import kotlin.random.Random
 

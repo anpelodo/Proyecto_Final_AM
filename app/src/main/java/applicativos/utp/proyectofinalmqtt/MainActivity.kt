@@ -10,13 +10,13 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import applicativos.utp.proyectofinalmqtt.JsonClases.devicesJSON
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         var dirIP = "192.168.0.2"
 
-        var devicesJson: devicesJSON ?= null
+        var devicesJson: devicesJSON?= null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +49,10 @@ class MainActivity : AppCompatActivity() {
 
         //Se inicializa FireBase Auth
         auth = FirebaseAuth.getInstance()
+
+        //Todo eliminar esto
+        Correo!!.setText("j.giraldo123@utp.edu.co")
+        Contra!!.setText("Juanfe97")
     }
 
     override fun onResume() {

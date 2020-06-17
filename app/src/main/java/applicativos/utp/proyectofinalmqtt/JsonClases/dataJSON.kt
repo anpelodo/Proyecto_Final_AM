@@ -1,4 +1,4 @@
-package applicativos.utp.proyectofinalmqtt
+package applicativos.utp.proyectofinalmqtt.JsonClases
 
 class dataJSON {
     var ndata = 0
