@@ -1,21 +1,15 @@
 package applicativos.utp.proyectofinalmqtt
 
-import android.graphics.Color
-import android.icu.text.CaseMap
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
-import androidx.core.graphics.blue
 import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
-import kotlinx.android.synthetic.main.pagina1_fragment.*
-import java.util.*
 
 class pagina1 : Fragment() {
     var grafica1: GraphView?=null
@@ -46,85 +40,65 @@ class pagina1 : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        //var A1:LineGraphSeries<DataPoint>?=null
+        //obtenemos los datos de la base de datos
+        val valores = ActivityDeviceList.dataJson!!
+        var sizeValores = valores.ndata
 
-        ParametrosGrafica1()
-        ParametrosGrafica2()
-        ParametrosGrafica3()
-        ParametrosGrafica4()
+        if (sizeValores == -1){
+            Toast.makeText(Tabbed.tabContext, "Error con la base de datos", Toast.LENGTH_SHORT).show()
+        } else if (sizeValores == 0) {
+            Toast.makeText(Tabbed.tabContext, "No hay elementos para mostrar", Toast.LENGTH_SHORT).show()
+        } else if(sizeValores > 0) {
+            sizeValores --
+
+            val an1: MutableList<DataPoint> = arrayListOf()
+            val an2: MutableList<DataPoint> = arrayListOf()
+            val s1: MutableList<DataPoint> = arrayListOf()
+            val s2: MutableList<DataPoint> = arrayListOf()
+
+            for (i in 0..sizeValores) {
+                val x = i.toDouble()
+                val y1 = valores.data!![i].a1.toDouble()
+                val y2 = valores.data!![i].a2.toDouble()
+                val y3 = if (valores.data!![i].s1) 1.0 else 0.0
+                val y4 = if (valores.data!![i].s2) 1.0 else 0.0
+
+                an1.add(DataPoint(x,y1))
+                an2.add(DataPoint(x,y2))
+                s1.add(DataPoint(x,y3))
+                s2.add(DataPoint(x,y4))
+            }
+
+            val A1 = LineGraphSeries(an1.toTypedArray())
+            val A2 = LineGraphSeries(an2.toTypedArray())
+            val S1 = LineGraphSeries(s1.toTypedArray())
+            val S2 = LineGraphSeries(s2.toTypedArray())
+
+            /*val a1 = LineGraphSeries(
+                arrayOf(
+                    DataPoint(1.0, 1.1),
+                    DataPoint(2.0, 2.2),
+                    DataPoint(3.0, 3.3),
+                    DataPoint(4.0, 4.4),
+                    DataPoint(5.0, 1.0),
+                    DataPoint(6.0, 2.0),
+                    DataPoint(7.0, 4.4),
+                    DataPoint(8.0, 2.2),
+                    DataPoint(9.0, 2.0)
+                )
+            )*/
+
+            parametrosGrafica(A1, grafica1!!, "Valores X", "A1[V]")
+            parametrosGrafica(A2, grafica2!!, "Valores X", "A2[V]")
+            parametrosGrafica(S1, grafica3!!, "Valores X", "S1[bool]")
+            parametrosGrafica(S2, grafica4!!, "Valores X", "S2[bool]")
+        }
     }
 
-    private fun ParametrosGrafica1(){
-
-    }
-
-    private fun ParametrosGrafica2(){
-        grafica2!!.viewport.setMaxX(9.0)
-        grafica2!!.viewport.setMinX(0.0)
-        grafica2!!.viewport.setMaxY(60.0)
-        grafica2!!.viewport.setMinY(0.0)
-        grafica2!!.viewport.setScalableY(true)
-        grafica2!!.gridLabelRenderer.horizontalAxisTitle="Valores X"
-        grafica2!!.gridLabelRenderer.verticalAxisTitle = "Valores Y"
-        val Datos = LineGraphSeries(
-            arrayOf(
-                DataPoint(1.0, 1.1),
-                DataPoint(2.0, 2.2),
-                DataPoint(3.0, 3.3),
-                DataPoint(4.0, 4.4),
-                DataPoint(5.0, 1.0),
-                DataPoint(6.0, 2.0),
-                DataPoint(7.0, 4.4),
-                DataPoint(8.0, 2.2),
-                DataPoint(9.0,2.0)
-            )
-        )
-        grafica2!!.addSeries(Datos)
-    }
-    private fun ParametrosGrafica3(){
-        grafica3!!.viewport.setMaxX(9.0)
-        grafica3!!.viewport.setMinX(0.0)
-        grafica3!!.viewport.setMaxY(60.0)
-        grafica3!!.viewport.setMinY(0.0)
-        grafica3!!.viewport.setScalableY(true)
-        grafica3!!.gridLabelRenderer.horizontalAxisTitle="Valores X"
-        grafica3!!.gridLabelRenderer.verticalAxisTitle = "Valores Y"
-        val Datos = LineGraphSeries(
-            arrayOf(
-                DataPoint(1.0, 1.1),
-                DataPoint(2.0, 2.2),
-                DataPoint(3.0, 3.3),
-                DataPoint(4.0, 4.4),
-                DataPoint(5.0, 1.0),
-                DataPoint(6.0, 2.0),
-                DataPoint(7.0, 4.4),
-                DataPoint(8.0, 2.2),
-                DataPoint(9.0,2.0)
-            )
-        )
-        grafica3!!.addSeries(Datos)
-    }
-
-    private fun ParametrosGrafica4(){
-        grafica4!!.viewport.setMaxX(9.0)
-        grafica4!!.viewport.setMinX(0.0)
-        grafica4!!.viewport.setMaxY(60.0)
-        grafica4!!.viewport.setMinY(0.0)
-        grafica4!!.viewport.setScalableY(true)
-        grafica4!!.gridLabelRenderer.horizontalAxisTitle="Valores X"
-        grafica4!!.gridLabelRenderer.verticalAxisTitle = "Valores Y"
-        val Datos = LineGraphSeries(
-            arrayOf(
-                DataPoint(1.0, 1.1),
-                DataPoint(2.0, 2.2),
-                DataPoint(3.0, 3.3),
-                DataPoint(4.0, 4.4),
-                DataPoint(5.0, 1.0),
-                DataPoint(6.0, 2.0),
-                DataPoint(7.0, 4.4),
-                DataPoint(8.0, 2.2),
-                DataPoint(9.0,2.0)
-            )
-        )
-        grafica4!!.addSeries(Datos)
+    private fun parametrosGrafica(datos: LineGraphSeries<DataPoint>, graph: GraphView, xTitle: String, yTitle: String) {
+        graph.gridLabelRenderer.horizontalAxisTitle=xTitle
+        graph.gridLabelRenderer.verticalAxisTitle=yTitle
+        graph.addSeries(datos)
     }
 }
