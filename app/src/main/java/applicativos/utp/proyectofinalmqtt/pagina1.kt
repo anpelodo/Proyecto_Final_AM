@@ -1,5 +1,7 @@
 package applicativos.utp.proyectofinalmqtt
 
+import android.graphics.Color
+import android.icu.text.CaseMap
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +15,7 @@ import com.jjoe64.graphview.GraphView
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import kotlinx.android.synthetic.main.pagina1_fragment.*
+import java.util.*
 
 class pagina1 : Fragment() {
 
@@ -21,6 +24,7 @@ class pagina1 : Fragment() {
     var grafica2: GraphView?=null
     var grafica3: GraphView?=null
     var grafica4: GraphView?=null
+
 
     companion object {
         fun newInstance() = pagina1()
@@ -38,8 +42,12 @@ class pagina1 : Fragment() {
         grafica3=vista1.findViewById(R.id.graph3)
         grafica4=vista1.findViewById(R.id.graph4)
 
+
+
         return  vista1
     }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -62,30 +70,7 @@ class pagina1 : Fragment() {
     }
 
     private fun ParametrosGrafica1(){
-        grafica1!!.viewport.setMaxX(9.0)
-        grafica1!!.viewport.setMinX(0.0)
-        grafica1!!.viewport.setMaxY(60.0)
-        grafica1!!.viewport.setMinY(0.0)
-        grafica1!!.viewport.setScalableY(true)
-        grafica1!!.gridLabelRenderer.horizontalAxisTitle="Valores X"
-        grafica1!!.gridLabelRenderer.verticalAxisTitle = "Valores Y"
 
-
-        val Datos = LineGraphSeries(
-            arrayOf(
-                DataPoint(1.0, 1.1),
-                DataPoint(2.0, 2.2),
-                DataPoint(3.0, 3.3),
-                DataPoint(4.0, 4.4),
-                DataPoint(5.0, 1.0),
-                DataPoint(6.0, 2.0),
-                DataPoint(7.0, 4.4),
-                DataPoint(8.0, 2.2),
-                DataPoint(9.0,2.0)
-            )
-        )
-
-        grafica1!!.addSeries(Datos)
 
     }
 
