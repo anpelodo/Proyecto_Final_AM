@@ -59,4 +59,7 @@ dependencies {
 
     //Librería para manejar JSON
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //libreria graficas
+    implementation 'com.jjoe64:graphview:4.2.2'
 }
