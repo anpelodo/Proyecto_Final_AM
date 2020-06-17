@@ -20,9 +20,17 @@ class ActivityDeviceList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_list)
 
-        info.add(deviceInfo("BB1", "Centro", "4.814248,-75.694688", "tabla_bb1"))
-        info.add(deviceInfo("BB2", "Parque Industrial", "4.814248,-75.694688", "tabla_bb2"))
-        info.add(deviceInfo("BB3", "Cuba", "4.814248,-75.694688", "tabla_bb3"))
+        val list:devicesJSON = MainActivity.devicesJson!!
+
+        when (list.ndata) {
+            -1 -> Toast.makeText(this, "Error con la base de datos", Toast.LENGTH_SHORT).show()
+            0 -> Toast.makeText(this,"No hay elementos para mostrar", Toast.LENGTH_SHORT).show()
+        }
+
+        //Se carga el ArrayList para el Recycler View
+        for (i in (0..list.ndata-1)) {
+            list.data?.get(i)?.let { info.add(it) }
+        }
 
         vista = findViewById(R.id.contenedor)
         vista!!.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
