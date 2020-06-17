@@ -1,5 +1,6 @@
 package applicativos.utp.proyectofinalmqtt
 
+import android.content.Context
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -12,6 +13,9 @@ import applicativos.utp.proyectofinalmqtt.ui.main.SectionsPagerAdapter
 
 class Tabbed : AppCompatActivity() {
 
+    companion object {
+        lateinit var tabContext:Context
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tabbed)
@@ -21,5 +25,6 @@ class Tabbed : AppCompatActivity() {
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
+        tabContext = this
     }
 }
